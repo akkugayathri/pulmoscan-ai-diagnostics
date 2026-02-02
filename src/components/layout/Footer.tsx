@@ -5,16 +5,7 @@ export function Footer() {
     <footer className="bg-foreground text-background py-10">
       <div className="medical-container max-w-4xl mx-auto text-center space-y-6">
 
-        {/* Medical Disclaimer */}
-        <div>
-          <h4 className="font-display font-semibold mb-2">
-            Medical Disclaimer
-          </h4>
-          <p className="text-xs text-background/70 leading-relaxed">
-            PulmoScan AI is an AI-assisted diagnostic support tool and should not replace professional medical advice,
-            diagnosis, or treatment. Always consult with a qualified healthcare provider for medical decisions.
-          </p>
-        </div>
+       
 
         {/* Divider */}
         <div className="border-t border-background/10 pt-6 space-y-3">
