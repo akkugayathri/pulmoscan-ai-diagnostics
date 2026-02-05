@@ -33,7 +33,7 @@ const symptomOptions = [
 export function PatientForm() {
   const navigate = useNavigate();
   const { setPatientData } = useDiagnosis();
-  
+
   const [formData, setFormData] = useState<PatientData>({
     fullName: '',
     age: 0,
@@ -56,23 +56,19 @@ export function PatientForm() {
     }
 
     if (!formData.age || formData.age < 1 || formData.age > 120) {
-      newErrors.age = 'Please enter a valid age (1-120)';
+      newErrors.age = 'Please enter a valid age (1–120)';
     }
 
     if (!formData.phone.trim()) {
       newErrors.phone = 'Phone number is required';
-    } else if (!/^\+?[\d\s-]{10,}$/.test(formData.phone)) {
-      newErrors.phone = 'Please enter a valid phone number';
     }
 
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
     }
 
     if (!formData.consentGiven) {
-      newErrors.consent = 'You must provide consent to proceed';
+      newErrors.consent = 'Consent is required to proceed';
     }
 
     setErrors(newErrors);
@@ -81,7 +77,7 @@ export function PatientForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (validateForm()) {
       setPatientData(formData);
       toast.success('Patient details saved');
@@ -110,9 +106,9 @@ export function PatientForm() {
     >
       <div className="medical-card space-y-6">
         <div className="text-center mb-8">
-          <h2 className="font-display text-2xl font-bold mb-2">Patient Information</h2>
+          <h2 className="text-2xl font-bold">Patient Information</h2>
           <p className="text-sm text-muted-foreground">
-            Please provide accurate information for the diagnosis report
+            Please provide accurate information for diagnosis
           </p>
         </div>
 
@@ -120,15 +116,17 @@ export function PatientForm() {
         <div className="grid md:grid-cols-2 gap-4">
           {/* Full Name */}
           <div className="space-y-2">
-            <Label htmlFor="fullName" className="flex items-center gap-2">
-              <User className="w-4 h-4 text-primary" />
+            <Label htmlFor="fullName">
+              <User className="inline w-4 h-4 mr-1" />
               Full Name *
             </Label>
             <Input
               id="fullName"
-              placeholder="John Doe"
+              placeholder="Enter full name"
               value={formData.fullName}
-              onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
+              onChange={(e) =>
+                setFormData(prev => ({ ...prev, fullName: e.target.value }))
+              }
               className={errors.fullName ? 'border-destructive' : ''}
             />
             {errors.fullName && (
@@ -138,18 +136,23 @@ export function PatientForm() {
 
           {/* Age */}
           <div className="space-y-2">
-            <Label htmlFor="age" className="flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-primary" />
+            <Label htmlFor="age">
+              <Calendar className="inline w-4 h-4 mr-1" />
               Age *
             </Label>
             <Input
               id="age"
               type="number"
-              min="1"
-              max="120"
-              placeholder="45"
+              min={1}
+              max={120}
+              placeholder="Enter age"
               value={formData.age || ''}
-              onChange={(e) => setFormData(prev => ({ ...prev, age: parseInt(e.target.value) || 0 }))}
+              onChange={(e) =>
+                setFormData(prev => ({
+                  ...prev,
+                  age: parseInt(e.target.value) || 0,
+                }))
+              }
               className={errors.age ? 'border-destructive' : ''}
             />
             {errors.age && (
@@ -162,7 +165,7 @@ export function PatientForm() {
             <Label>Gender *</Label>
             <Select
               value={formData.gender}
-              onValueChange={(value: 'male' | 'female' | 'other') => 
+              onValueChange={(value: 'male' | 'female' | 'other') =>
                 setFormData(prev => ({ ...prev, gender: value }))
               }
             >
@@ -179,16 +182,18 @@ export function PatientForm() {
 
           {/* Phone */}
           <div className="space-y-2">
-            <Label htmlFor="phone" className="flex items-center gap-2">
-              <Phone className="w-4 h-4 text-primary" />
+            <Label htmlFor="phone">
+              <Phone className="inline w-4 h-4 mr-1" />
               Phone Number *
             </Label>
             <Input
               id="phone"
               type="tel"
-              placeholder="+1 (555) 123-4567"
+              placeholder="Enter phone number"
               value={formData.phone}
-              onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+              onChange={(e) =>
+                setFormData(prev => ({ ...prev, phone: e.target.value }))
+              }
               className={errors.phone ? 'border-destructive' : ''}
             />
             {errors.phone && (
@@ -198,16 +203,18 @@ export function PatientForm() {
 
           {/* Email */}
           <div className="space-y-2 md:col-span-2">
-            <Label htmlFor="email" className="flex items-center gap-2">
-              <Mail className="w-4 h-4 text-primary" />
+            <Label htmlFor="email">
+              <Mail className="inline w-4 h-4 mr-1" />
               Email Address *
             </Label>
             <Input
               id="email"
               type="email"
-              placeholder="john.doe@example.com"
+              placeholder="Enter email address"
               value={formData.email}
-              onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+              onChange={(e) =>
+                setFormData(prev => ({ ...prev, email: e.target.value }))
+              }
               className={errors.email ? 'border-destructive' : ''}
             />
             {errors.email && (
@@ -218,21 +225,15 @@ export function PatientForm() {
 
         {/* Symptoms */}
         <div className="space-y-3">
-          <Label className="flex items-center gap-2">
-            <Stethoscope className="w-4 h-4 text-primary" />
+          <Label>
+            <Stethoscope className="inline w-4 h-4 mr-1" />
             Current Symptoms
           </Label>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-            {symptomOptions.map((symptom) => (
+            {symptomOptions.map(symptom => (
               <label
                 key={symptom}
-                className={`
-                  flex items-center gap-2 p-3 rounded-lg border cursor-pointer transition-all
-                  ${formData.symptoms.includes(symptom) 
-                    ? 'bg-primary/10 border-primary' 
-                    : 'bg-secondary/50 border-transparent hover:border-primary/30'
-                  }
-                `}
+                className="flex items-center gap-2 p-3 border rounded-lg cursor-pointer"
               >
                 <Checkbox
                   checked={formData.symptoms.includes(symptom)}
@@ -246,52 +247,56 @@ export function PatientForm() {
 
         {/* Other Symptoms */}
         <div className="space-y-2">
-          <Label htmlFor="otherSymptoms">Other Symptoms</Label>
+          <Label>Other Symptoms</Label>
           <Textarea
-            id="otherSymptoms"
-            placeholder="Describe any other symptoms you're experiencing..."
+            placeholder="Describe other symptoms (if any)"
             value={formData.otherSymptoms}
-            onChange={(e) => setFormData(prev => ({ ...prev, otherSymptoms: e.target.value }))}
-            rows={3}
+            onChange={(e) =>
+              setFormData(prev => ({
+                ...prev,
+                otherSymptoms: e.target.value,
+              }))
+            }
           />
         </div>
 
         {/* Existing Conditions */}
         <div className="space-y-2">
-          <Label htmlFor="existingConditions">Existing Medical Conditions</Label>
+          <Label>Existing Medical Conditions</Label>
           <Textarea
-            id="existingConditions"
-            placeholder="List any pre-existing conditions, allergies, or medications..."
+            placeholder="Mention existing conditions or medications"
             value={formData.existingConditions}
-            onChange={(e) => setFormData(prev => ({ ...prev, existingConditions: e.target.value }))}
-            rows={3}
+            onChange={(e) =>
+              setFormData(prev => ({
+                ...prev,
+                existingConditions: e.target.value,
+              }))
+            }
           />
         </div>
 
         {/* Consent */}
         <div className="p-4 bg-secondary/50 rounded-lg">
-          <label className="flex items-start gap-3 cursor-pointer">
+          <label className="flex items-start gap-3">
             <Checkbox
               checked={formData.consentGiven}
-              onCheckedChange={(checked) => 
-                setFormData(prev => ({ ...prev, consentGiven: checked as boolean }))
+              onCheckedChange={checked =>
+                setFormData(prev => ({
+                  ...prev,
+                  consentGiven: checked as boolean,
+                }))
               }
-              className="mt-0.5"
             />
-            <div className="space-y-1">
-              <span className="text-sm font-medium">I consent to AI-assisted analysis *</span>
-              <p className="text-xs text-muted-foreground">
-                I understand that PulmoScan AI provides AI-assisted diagnostic support and is not a replacement for professional medical advice. I consent to the processing of my medical data for analysis purposes.
-              </p>
-            </div>
+            <span className="text-sm">
+              I consent to AI-assisted diagnostic analysis *
+            </span>
           </label>
           {errors.consent && (
-            <p className="text-xs text-destructive mt-2">{errors.consent}</p>
+            <p className="text-xs text-destructive mt-1">{errors.consent}</p>
           )}
         </div>
 
-        {/* Submit Button */}
-        <Button type="submit" size="lg" className="w-full gap-2 font-semibold">
+        <Button type="submit" size="lg" className="w-full gap-2">
           Continue to Upload Scan
           <ArrowRight className="w-5 h-5" />
         </Button>
